@@ -15,11 +15,11 @@ jobs:
 
       - name: Fetch IP List
         run: |
-          curl -o abuseip2.json https://raw.githubusercontent.com/borestad/blocklist-abuseipdb/main/abuseipdb-s100-14d.ipv4
+          curl -o abuseip.json https://raw.githubusercontent.com/borestad/blocklist-abuseipdb/main/abuseipdb-s100-14d.ipv4
 
       - name: Format IP List
         run: |
-          jq -R -s -c 'split("\n") | map(select(test("^[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+$")))' abuseip2.json > tmp.json && mv tmp.json abuseip2.json
+          jq -R -s -c 'split("\n") | map(select(test("^[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+$")))' abuseip.json > tmp.json && mv tmp.json abuseip.json
 
 
       - name: Commit changes
@@ -27,7 +27,7 @@ jobs:
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git fetch
-          git add abuseip2.json
+          git add abuseip.json
           git commit -m '[AUTO] Update spam IP list'
           git push origin HEAD:${{ github.ref }}
         env:
